@@ -9,11 +9,18 @@
 
     <form action="{% url 'entry' %}" method="POST">
         {% csrf_token %}
-        {{ form }}
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            <input class="form-control" type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" value="{{ form.title.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="{{ form.content.id_for_label }}">{{ form.content.label }}</label>
+            <textarea class="form-control form-control-sm" name="{{ form.content.name }}" id="{{ form.content.id_for_label }}">{{ form.content.value|default_if_none:'' }}</textarea>
+        </div>
         {% if existing_entry %}
-            <p>An entry with this title already exists.</p>
+            <p style="color: red;">An entry with this title already exists.</p>
         {% endif %}
-        <button type="submit">Submit Wiki</button>
+        <button type="submit" class="btn btn-primary">Submit Wiki</button>
     </form>
 
 {% endblock %}
