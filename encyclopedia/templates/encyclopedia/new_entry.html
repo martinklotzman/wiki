@@ -1,0 +1,19 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Add Wiki
+{% endblock %}
+
+{% block body %}
+    <h1>Add Wiki:</h1>
+
+    <form action="{% url 'entry' %}" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        {% if existing_entry %}
+            <p>An entry with this title already exists.</p>
+        {% endif %}
+        <button type="submit">Submit Wiki</button>
+    </form>
+
+{% endblock %}
