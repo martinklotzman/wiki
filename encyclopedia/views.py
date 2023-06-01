@@ -71,4 +71,27 @@ def entry(request):
     return render(request, "encyclopedia/new_entry.html", {
         "form": form
     })
-
+    
+def edit(request, title):
+    # Check if the request method is POST
+    if request.method == 'POST':
+        # In that case, the form is submitted, so bind the POST data to a form instance
+        form = NewEntryForm(request.POST)
+        # Check if the form is valid
+        if form.is_valid():
+            # If the form is valid, retrieve the cleaned data
+            title = form.cleaned_data["title"]
+            content = form.cleaned_data["content"]
+            # Save the new entry using the utility function
+            util.save_entry(title, content)
+            # Redirect the user to the entry's page
+            return redirect('wiki', title=title)
+    else:
+        # Retrieve the existing entry using get_entry utility function
+        content = util.get_entry(title)
+        # If the request method is not 'POST' (i.e., the user is just opening the edit page),
+        # create a form instance with the current title and content of the entry as initial data
+        form = NewEntryForm(initial={'title': title, 'content': content})
+    
+    # Render the form with the context data
+    return render(request, 'encyclopedia/edit.html', {'form': form})
