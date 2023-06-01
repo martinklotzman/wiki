@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django import forms
 from . import util
+import random
 
 class NewEntryForm(forms.Form):
     title = forms.CharField(label="Title")
@@ -95,3 +96,11 @@ def edit(request, title):
     
     # Render the form with the context data
     return render(request, 'encyclopedia/edit.html', {'form': form})
+
+def random_entry(request):
+    # Save all entries into a variable called 'entries'
+    entries = util.list_entries()
+    # Select a random entry from the list of entries
+    random_entry = random.choice(entries)
+    # We're passing the title of the random entry as an argument to match the <str:title> parameter in the URL pattern
+    return redirect("wiki", title=random_entry)
