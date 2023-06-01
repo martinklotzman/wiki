@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django import forms
 from . import util
 import random
+import markdown2
 
 class NewEntryForm(forms.Form):
     title = forms.CharField(label="Title")
@@ -15,8 +16,9 @@ def index(request):
 def wiki(request, title):
     # Retrieve the wiki entry using get_entry
     wiki = util.get_entry(title)
+    html_wiki = markdown2.markdown(wiki)
     
-    if wiki is None:
+    if html_wiki is None:
         # If the entry does not exist, show an error message
         return render(request, "encyclopedia/error.html", {
             "error_message": f"Sorry, the entry <b>{title}</b> does not exist."
@@ -26,7 +28,7 @@ def wiki(request, title):
         # If the entry exists, convert it from markdown to HTML and display
         return render(request, "encyclopedia/wiki.html", {
             "title": title,
-            "wiki": wiki
+            "wiki": html_wiki
         })
         
 def search(request):

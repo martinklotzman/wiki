@@ -7,7 +7,7 @@
 {% block body %}
     <h1>{{ title }}</h1>
 
-    <div>{{ wiki }}</div>
+    <div>{{ wiki|safe }}</div>
 
     <div><a href="{% url 'edit' title=title %}">Edit this wiki</a></div>
     
